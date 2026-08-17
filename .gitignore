@@ -1,0 +1,17 @@
+# === Python Build & Cache ===
+__pycache__/
+*.py[cod]
+.ruff_cache/
+build/
+*.egg-info/
+
+# === Virtual Environments ===
+venv/
+
+# === Configuration & Secrets ===
+*.env
+
+# === Temporary Files & Testing ===
+*.json
+*.log
+test.py
