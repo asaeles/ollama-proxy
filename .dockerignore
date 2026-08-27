@@ -10,6 +10,8 @@ venv/
 
 # === Configuration & Secrets ===
 *.env
+.gitignore
+.git/
 
 # === Temporary Files & Testing ===
 *.json

@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ollama-proxy"
+version = "0.1.0"
+authors = [
+  {name = "Ahmad Sulaeman", email = "asaeles@gmail.com"},
+]
+description = "Proxy server to Ollama API to inject tools"
+readme = "README.md"
+requires-python = ">=3.12,<3.14"
+dependencies = [
+    "python-dotenv",
+]
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+
+[project.urls]
+Homepage = "https://github.com/asaeles/ollama-proxy"
+
+[project.scripts]
+ollama-proxy = "ollama_proxy.app:main"
