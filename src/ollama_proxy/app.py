@@ -160,15 +160,13 @@ def apply_title_prompt_replacement(data: dict[str, object]) -> bool:
     if not isinstance(messages, list):
         return False
 
-    replaced = False
-    for message in messages:
-        if not isinstance(message, dict):
-            continue
-        if isinstance(message.get("content"), str):
-            message["content"] = REPLACE_TITLE_PROMPT
-            message["role"] = "system"
-            replaced = True
-    return replaced
+    if messages:
+        last_message = messages[-1]
+        if isinstance(last_message, dict) and isinstance(last_message.get("content"), str):
+            last_message["content"] = REPLACE_TITLE_PROMPT
+            last_message["role"] = "system"
+            return True
+    return False
 
 
 def inject_saved_tools(data: dict[str, object]) -> bool:
