@@ -187,6 +187,25 @@ def inject_saved_tools(data: dict[str, object]) -> bool:
     return True
 
 
+def ensure_user_message(data: dict[str, object]) -> bool:
+    """Injects a synthetic user message if Continue.dev drops it during a tool loop."""
+    messages = data.get("messages")
+    if not isinstance(messages, list) or not messages:
+        return False
+        
+    has_user = any(isinstance(m, dict) and m.get("role") == "user" for m in messages)
+    if not has_user:
+        insert_idx = 1 if (isinstance(messages[0], dict) and messages[0].get("role") == "system") else 0
+        messages.insert(insert_idx, {
+            "role": "user",
+            "content": "Please continue."
+        })
+        log("INJECTED SYNTHETIC USER MESSAGE TO BYPASS QWEN TEMPLATE CRASH", LogLevel.BRIEF)
+        return True
+
+    return False
+
+
 def print_request(request_id: int, path: str, body: bytes) -> dict[str, object] | None:
     log("", LogLevel.BRIEF)
     log("=" * 80, LogLevel.BRIEF)
@@ -526,6 +545,9 @@ class OllamaProxyHandler(BaseHTTPRequestHandler):
 
         request_data = parsed
         modified = False
+
+        if ensure_user_message(request_data):
+            modified = True
 
         if inject_saved_tools(request_data):
             modified = True
